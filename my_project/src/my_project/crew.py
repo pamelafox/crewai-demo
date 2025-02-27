@@ -1,27 +1,28 @@
 # src/latest_ai_development/crew.py
 import logging
+import os
 
-from crewai import Agent, Crew, Process, Task
+from crewai import LLM, Agent, Crew, Process, Task
 from crewai.project import CrewBase, after_kickoff, agent, before_kickoff, crew, task
 from crewai_tools import SerperDevTool
 
 logging.basicConfig(level=logging.DEBUG)
 
-# GitHub Models llm
-"""
+# To use GitHub models, pass this as llm argument into the Agent() calls below,
+# comment out any OPENAI related env variables from .env,
+# and remove llm parameters from agents.yaml
 llm = LLM(
-    model="openai/gpt-4o", # call model by provider/model_name
+    model="openai/gpt-4o",  # call model by provider/model_name
     base_url="https://models.github.ai/inference",
+    api_key=os.getenv("GITHUB_TOKEN"),
     temperature=0.8,
     max_tokens=150,
     top_p=0.9,
     frequency_penalty=0.1,
     presence_penalty=0.1,
     stop=["END"],
-    seed=42
+    seed=42,
 )
-How would we pass as the global llm?
-"""
 
 
 @CrewBase
